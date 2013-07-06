@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/check"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="check"/>
+    <item
+        android:id="@+id/logcat"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="logcat"/>
+
+</menu>
