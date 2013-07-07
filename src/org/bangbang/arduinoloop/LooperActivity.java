@@ -55,7 +55,6 @@ public class LooperActivity extends Activity {
 	FileOutputStream mOutputStream;
 
 	private TextView mText;
-	private ListView mSession;
 	private ArrayAdapter<SessionItem> mAdapter;
 
 	private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
@@ -92,10 +91,11 @@ public class LooperActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		mText = (TextView) findViewById(R.id.text);
-		mSession = (ListView)findViewById(R.id.session);
+
+		ListView session = (ListView)findViewById(R.id.session);
 		mAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, new ArrayList<SessionItem>());
-		mSession.setAdapter(mAdapter);
-		mSession.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+		session.setAdapter(mAdapter);
+		session.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
 		
 		mUsbManager = UsbManager.getInstance(this);
 		mPermissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(
@@ -213,15 +213,15 @@ public class LooperActivity extends Activity {
 		}
 	}
 	
-	public void onSent(String mesage) {
+	public void onSent(String message) {
 		if (mOutputStream != null) {
-			if (!TextUtils.isEmpty(mesage)) {
-				byte[] buffer = mesage.getBytes();
+			if (!TextUtils.isEmpty(message)) {
+				byte[] buffer = message.getBytes();
 				try {
-					Log.d(TAG, "SND: " + mesage);
+					Log.d(TAG, "SND: " + message);
 					
 					int count = buffer.length;
-					String log = "SND: 0x" + mesage;
+					String log = "SND: 0x" + message;
 					for (int i = 0 ; i < count; i++) {
 						log += Integer.toHexString(buffer[i]);
 					}
@@ -233,16 +233,16 @@ public class LooperActivity extends Activity {
 				}
 			}
 			
-			SessionItem item = new SessionItem(System.currentTimeMillis(), SessionItem.DIRECTION_OUT, mesage);
+			SessionItem item = new SessionItem(System.currentTimeMillis(), SessionItem.DIRECTION_OUT, message);
 			mAdapter.add(item);
 			mAdapter.notifyDataSetChanged();
 		}
 	}
 	
-	void onRcvd(String mesage) {
-		Log.d(TAG, "RCV: " + mesage);
+	void onRcvd(String message) {
+		Log.d(TAG, "RCV: " + message);
 		
-		SessionItem item = new SessionItem(System.currentTimeMillis(), SessionItem.DIRECTION_IN, mesage);
+		SessionItem item = new SessionItem(System.currentTimeMillis(), SessionItem.DIRECTION_IN, message);
 		mAdapter.add(item);
 		mAdapter.notifyDataSetChanged();
 	}
