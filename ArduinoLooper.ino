@@ -14,7 +14,7 @@ ADK adk(&Usb,
         // Version
         "1.0",
         // URL (web page to visit if no installed apps support the accessory)
-        "https://github.com/luoqii/android_arduino_loop",
+        "https://github.com/luoqii/android_arduino_loop/blob/master/ArduinoLooper.apk?raw=true",
         // Serial Number (optional)
         "123456789");
 
