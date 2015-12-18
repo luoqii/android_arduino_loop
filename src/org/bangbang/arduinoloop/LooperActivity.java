@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.android.future.usb.UsbAccessory;
 import com.android.future.usb.UsbManager;
+
 import com.tudou.android.fw.activity.LogcatActivity;
 import com.tudou.android.fw.util.Log;
 
@@ -104,6 +105,15 @@ public class LooperActivity extends Activity {
 		filter.addAction(UsbManager.ACTION_USB_ACCESSORY_DETACHED);
 		filter.addAction(UsbManager.ACTION_USB_ACCESSORY_ATTACHED);
 		registerReceiver(mUsbReceiver, filter);
+	}
+	
+	@Override
+	protected void onNewIntent(Intent intent) {
+		// TODO Auto-generated method stub
+		super.onNewIntent(intent);
+		Log.d(TAG, "onNewIntent. action: " + intent.getAction());
+		
+		checkAccessory();
 	}
 	
 	@Override
@@ -196,9 +206,17 @@ public class LooperActivity extends Activity {
 			if (mFileDescriptor != null) {
 				mFileDescriptor.close();
 			}
+			if (null != mOutputStream){
+				mOutputStream.close();				
+			}
+			if (null != mInputStream){
+				mInputStream.close();
+			}
 		} catch (IOException e) {
 		} finally {
 			mFileDescriptor = null;
+			mOutputStream = null;
+			mInputStream = null;
 			mAccessory = null;
 		}
 
@@ -221,13 +239,14 @@ public class LooperActivity extends Activity {
 					Log.d(TAG, "SND: " + message);
 					
 					int count = buffer.length;
-					String log = "SND: 0x" + message;
+					String log = "SND: 0x";
 					for (int i = 0 ; i < count; i++) {
 						log += Integer.toHexString(buffer[i]);
 					}
 					Log.d(TAG, log);
 					
 					mOutputStream.write(buffer);
+					mOutputStream.flush();
 				} catch (IOException e) {
 					Log.e(TAG, "IOException", e);
 				}
