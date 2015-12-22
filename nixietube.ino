@@ -1,6 +1,12 @@
 
 
-
+/*
+ * 
+ * 
+ *   L   a    f    C    R    b
+ *   
+ *   e    d    :    c    g    ?    
+ */
 int A = 1;
 int B = 2;
 int C = 3;
